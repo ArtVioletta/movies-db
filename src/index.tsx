@@ -1,3 +1,8 @@
+import '@fontsource/roboto/300.css'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/500.css'
+import '@fontsource/roboto/700.css'
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.scss'
@@ -8,22 +13,31 @@ import { About } from './features/About/About'
 import Movies from './features/Movies/Movies'
 import store from './store'
 import { Provider } from 'react-redux'
+import Home from './Home/Home'
+
+function AppEntrypoint() {
+    return (
+        <Provider store={store}>
+            <App />
+        </Provider>
+    )
+}
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: (
-            <Provider store={store}>
-                <App />
-            </Provider>
-        ),
+        element: <AppEntrypoint />,
         children: [
             {
-                path: '/movies',
+                path: '/',
+                element: <Home />,
+            },
+            {
+                path: 'movies',
                 element: <Movies />,
             },
             {
-                path: '/about',
+                path: 'about',
                 element: <About />,
             },
         ],
@@ -33,7 +47,7 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
     <React.StrictMode>
-        <RouterProvider router={router}></RouterProvider>
+        <RouterProvider router={router} />
     </React.StrictMode>
 )
 

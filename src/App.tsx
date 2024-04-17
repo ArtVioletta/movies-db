@@ -1,38 +1,71 @@
 import React from 'react'
-import styles from './App.module.scss'
-import { Link, Outlet } from 'react-router-dom'
+import { Link as RouterLink, Outlet } from 'react-router-dom'
+import CssBaseline from '@mui/material/CssBaseline'
+import {
+    AppBar,
+    createTheme,
+    Link,
+    Toolbar,
+    Typography,
+    colors,
+} from '@mui/material'
+import { LiveTvOutlined } from '@mui/icons-material'
+import { ThemeProvider } from 'react-bootstrap'
+
+const defaultTheme = createTheme({
+    palette: {
+        primary: colors.teal,
+        secondary: {
+            main: '#96000f',
+        },
+    },
+})
+
+function HeaderLink({
+    children,
+    to,
+}: {
+    to: string
+    children: React.ReactNode
+}) {
+    return (
+        <Link
+            component={RouterLink}
+            to={to}
+            variant="button"
+            color="inherit"
+            sx={{ my: 1, mx: 1.5 }}
+        >
+            {children}
+        </Link>
+    )
+}
 
 function App() {
     return (
-        <div className={styles.root}>
-            <header className={styles.header}>
-                <img
-                    src="/cinema-ico.png"
-                    className={styles.logo}
-                    alt="cinema"
-                />
-                <ul>
-                    <li>
-                        <Link className={styles.link} to="/">
-                            Home
-                        </Link>
-                    </li>
-                    <li>
-                        <Link className={styles.link} to="/movies">
-                            Movies
-                        </Link>
-                    </li>
-                    <li>
-                        <Link className={styles.link} to="/about">
-                            About
-                        </Link>
-                    </li>
-                </ul>
-            </header>
-            <main className={styles.main}>
-                <Outlet />
-            </main>
-        </div>
+        <ThemeProvider theme={defaultTheme}>
+            <div>
+                <CssBaseline />
+                <AppBar position="relative">
+                    <Toolbar>
+                        <LiveTvOutlined sx={{ mr: 2 }} />
+                        <Typography variant="h6" color="inherit" noWrap>
+                            The Movies DB
+                        </Typography>
+                        <nav>
+                            <HeaderLink to="/">Home</HeaderLink>
+
+                            <HeaderLink to="/movies">Movies</HeaderLink>
+
+                            <HeaderLink to="/about">About</HeaderLink>
+                        </nav>
+                    </Toolbar>
+                </AppBar>
+                <main>
+                    <Outlet />
+                </main>
+            </div>
+        </ThemeProvider>
     )
 }
 
