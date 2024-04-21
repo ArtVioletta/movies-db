@@ -1,16 +1,10 @@
-import React from 'react'
-import { Link as RouterLink, Outlet } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Outlet } from 'react-router-dom'
 import CssBaseline from '@mui/material/CssBaseline'
-import {
-    AppBar,
-    createTheme,
-    Link,
-    Toolbar,
-    Typography,
-    colors,
-} from '@mui/material'
-import { LiveTvOutlined } from '@mui/icons-material'
+import { createTheme, colors } from '@mui/material'
 import { ThemeProvider } from 'react-bootstrap'
+import { AppHeader } from './AppHeader'
+import { anonymousUser, AuthContext, AuthInfo } from './AuthContext'
 
 const defaultTheme = createTheme({
     palette: {
@@ -21,52 +15,31 @@ const defaultTheme = createTheme({
     },
 })
 
-function HeaderLink({
-    children,
-    to,
-}: {
-    to: string
-    children: React.ReactNode
-}) {
-    return (
-        <Link
-            component={RouterLink}
-            to={to}
-            variant="button"
-            color="inherit"
-            sx={{ my: 1, mx: 1.5 }}
-        >
-            {children}
-        </Link>
-    )
+const fakeAuth: AuthInfo = {
+    user: {
+        name: 'Diana',
+    },
 }
 
 function App() {
+    const [auth, setAuth] = useState<AuthInfo>({ user: anonymousUser })
     return (
         <ThemeProvider theme={defaultTheme}>
             <div>
                 <CssBaseline />
-                <AppBar position="relative">
-                    <Toolbar>
-                        <LiveTvOutlined sx={{ mr: 2 }} />
-                        <Typography variant="h6" color="inherit" noWrap>
-                            The Movies DB
-                        </Typography>
-                        <nav>
-                            <HeaderLink to="/">Home</HeaderLink>
-
-                            <HeaderLink to="/movies">Movies</HeaderLink>
-
-                            <HeaderLink to="/about">About</HeaderLink>
-                        </nav>
-                    </Toolbar>
-                </AppBar>
-                <main>
-                    <Outlet />
-                </main>
+                <AuthContext.Provider value={auth}>
+                    <AppHeader
+                        onLogin={() => setAuth(fakeAuth)}
+                        onLogOut={() => setAuth({ user: anonymousUser })}
+                    />
+                    <main>
+                        <Outlet />
+                    </main>
+                </AuthContext.Provider>
             </div>
         </ThemeProvider>
     )
 }
 
 export default App
+

@@ -7,10 +7,7 @@ type ActionHandlers<S> = {
 export interface ActionWithPayload<T> extends Action {
     payload: T
 }
-export function createReducer<TState>(
-    initialState: TState,
-    handlers: ActionHandlers<TState>
-) {
+export function createReducer<TState>(initialState: TState, handlers: ActionHandlers<TState>) {
     return function (state: TState, action: Action) {
         state ??= initialState
         const handler = handlers[action.type]
@@ -18,3 +15,4 @@ export function createReducer<TState>(
         return handler?.(state, action) ?? state
     }
 }
+

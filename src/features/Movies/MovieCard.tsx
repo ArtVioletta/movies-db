@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom'
-import styles from './MoviesCard.module.scss'
 import {
     Card,
     Button,
@@ -7,8 +5,11 @@ import {
     CardContent,
     CardMedia,
     Typography,
+    IconButton,
+    Tooltip,
 } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
+import FavoriteIcon from '@mui/icons-material/Favorite'
 
 interface MovieCardProps {
     title: string
@@ -16,20 +17,22 @@ interface MovieCardProps {
     popularity: number
     id: number
     image?: string
+    enableUserActions?: boolean
 }
 
-function MovieCard({
+export function MovieCard({
     id,
     title,
     overview,
     popularity,
+    enableUserActions,
     image = '/movie-thumb.png',
 }: MovieCardProps) {
     return (
         <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardMedia component="div" sx={{ pt: '56.25%' }} image={image} />
             <CardContent sx={{ flexGrow: 1 }}>
-                <Typography gutterBottom variant="h5" component="h2">
+                <Typography gutterBottom variant="h5">
                     {title}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -40,15 +43,18 @@ function MovieCard({
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button
-                    component={RouterLink}
-                    to={`/movies/${id}`}
-                    color="secondary"
-                >
+                <Button component={RouterLink} to={`/movies/${id}`} color="secondary">
                     Details
                 </Button>
+                {enableUserActions && (
+                    <Tooltip title="Add to favorotes">
+                        <IconButton>
+                            <FavoriteIcon />
+                        </IconButton>
+                    </Tooltip>
+                )}
             </CardActions>
         </Card>
     )
 }
-export default MovieCard
+

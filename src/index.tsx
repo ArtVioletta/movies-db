@@ -5,7 +5,6 @@ import '@fontsource/roboto/700.css'
 
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './index.scss'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
@@ -14,11 +13,14 @@ import Movies from './features/Movies/Movies'
 import store from './store'
 import { Provider } from 'react-redux'
 import Home from './Home/Home'
+import { ErrorBoundary } from './ErrorBoundary'
 
 function AppEntrypoint() {
     return (
         <Provider store={store}>
-            <App />
+            <ErrorBoundary>
+                <App />
+            </ErrorBoundary>
         </Provider>
     )
 }
@@ -52,3 +54,4 @@ root.render(
 )
 
 reportWebVitals()
+
